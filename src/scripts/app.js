@@ -1,6 +1,5 @@
 import {CanvasEngine} from "./canvasEngine.js";
-import {spawnCircle} from "./circle.js";
-import {spawnSquare} from "./square.js";
+
 
 const app = new CanvasEngine('canvas');
 
