@@ -1,6 +1,6 @@
-import { Shape } from "./IShape";
+import { IShape } from "./IShape";
 
-export class Square implements Shape {
+export class Square implements IShape {
     private x: number | 0;
     private y: number | 0;
     private size: number | 0;
