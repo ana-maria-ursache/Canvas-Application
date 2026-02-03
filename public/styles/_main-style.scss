@@ -1,7 +1,9 @@
+@use 'variables' as *;
+
 @mixin h3-personalisation {
     h3 {
         margin: 0 0 15px 0;
-        color: #00ffcc; 
+        color: $color-primary; 
         font-size: 1rem;
         text-transform: uppercase;
         letter-spacing: 1.5px;
@@ -10,11 +12,11 @@
 }
 
 body {
-    background-color: #0d0d0d; 
+    background-color: $color-bg-dark; 
     margin: 0;
     padding: 0;
     font-family: 'Inter', -apple-system, sans-serif;
-    color: #f3fff7;
+    color: $color-text-primary;
     overflow: hidden;
 
     display:flex;
@@ -32,8 +34,8 @@ body {
         .details-panel { 
             width: 280px; 
             min-width: 280px; 
-            background: #1a1a1a; 
-            border: 1px solid #333;
+            background: $color-bg-panel; 
+            border: 1px solid $color-border-medium;
             border-radius: 12px;
             display: flex; 
             flex-direction: column; 
@@ -42,7 +44,7 @@ body {
 
             .options, #telemetry {
                 padding: 20px;
-                border-bottom: 1px solid #2a2a2a;
+                border-bottom: 1px solid $color-border-dark;
 
                 @include h3-personalisation();
             }
@@ -51,22 +53,23 @@ body {
                 width: 100%;
                 padding: 12px;
                 margin-bottom: 10px;
-                border: 1px solid #444;
+                border: 1px solid $color-border-light;
                 border-radius: 8px;
-                background-color: #252525;
-                color: #ffffff;
+                background-color: $color-bg-button;
+                color: $color-text-white;
                 font-weight: 600;
                 cursor: pointer;
                 transition: all 0.2s ease;
+                font-size: 14px;
 
                 &:last-child{
                     margin-top: 20px;
                 }
 
                 &:hover {
-                    background-color: #333;
-                    border-color: #00ffcc;
-                    color: #00ffcc;
+                    background-color: $color-border-medium;
+                    border-color: $color-primary;
+                    color: $color-primary;
                 }
                 
                 &:active {
@@ -77,25 +80,25 @@ body {
             #telemetry p { 
                 font-family: 'Courier New', monospace; 
                 font-size: 1rem; 
-                color: #f0fff6;
-                background: #0a0a0a; 
+                color: $color-text-secondary;
+                background: $color-bg-telemetry; 
                 padding: 10px;
                 border-radius: 6px;
                 margin: 8px 0;
-                border: 1px solid #222;
+                border: 1px solid $color-border-darkest;
 
                 span { 
-                    color: #ffa6a6; 
+                    color: $color-accent; 
                     font-weight: bold;
                 }
             }
         }
 
         #canvas {
-            background-color: #121212;
-            background-image: radial-gradient(#2a2a2a 1px, transparent 1px);
+            background-color: $color-bg-canvas;
+            background-image: radial-gradient($color-grid 1px, transparent 1px);
             background-size: 30px 30px; 
-            border: 1px solid #333;
+            border: 1px solid $color-border-medium;
             border-radius: 12px;
             flex-grow: 1;
             max-width: 80%;
@@ -133,17 +136,6 @@ body {
                         font-size: 12px;
                     }
                 }
-            }
-
-            #canvas {
-                background-color: #121212;
-                background-image: radial-gradient(#2a2a2a 1px, transparent 1px);
-                background-size: 30px 30px; 
-                border: 1px solid #333;
-                border-radius: 12px;
-                flex-grow: 1;
-                max-width: 80%;
-                height: 100%;
             }
         }
     }

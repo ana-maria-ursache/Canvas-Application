@@ -1,5 +1,7 @@
 import { Square } from "./square.js";
 import { Circle } from "./circle.js";
+import { TelemetryManager } from "./telemetry.js";
+
 
 export class CanvasEngine {
     constructor(canvasId) {
@@ -7,6 +9,10 @@ export class CanvasEngine {
         this.ctx = this.canvas.getContext('2d');
         this.shapes = []; 
         
+        this.telemetry = new TelemetryManager();
+        this.lastUpdateTime = 0;
+        this.currentTimeDiff = 0;
+
         this.init();
     }
 
@@ -67,10 +73,18 @@ export class CanvasEngine {
     }
 
     startLoop() {
-        const render = () => {
+        const render = (timestamp) => {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // from the 2d context
 
             this.shapes.forEach(shape => shape.draw(this.ctx));
+        
+            this.currentDiff= timestamp - this.currentTimeDiff;
+            this.currentTimeDiff = timestamp;
+            
+            if(timestamp - this.lastUpdateTime >= 1000){
+                this.telemetry.updateFPS(this.currentDiff);
+                this.lastUpdateTime = timestamp;
+            }
 
             // window function to use render for drawing
             // instead of setInterval, that doesn't stop when changing the tab

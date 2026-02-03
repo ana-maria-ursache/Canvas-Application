@@ -50,6 +50,7 @@ body .app-container .details-panel button {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-size: 14px;
 }
 body .app-container .details-panel button:last-child {
   margin-top: 20px;
@@ -110,16 +111,6 @@ body .app-container #canvas {
   }
   body .app-container .details-panel #telemetry p span {
     font-size: 12px;
-  }
-  body .app-container #canvas {
-    background-color: #121212;
-    background-image: radial-gradient(#2a2a2a 1px, transparent 1px);
-    background-size: 30px 30px;
-    border: 1px solid #333;
-    border-radius: 12px;
-    flex-grow: 1;
-    max-width: 80%;
-    height: 100%;
   }
 }
 
