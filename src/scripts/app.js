@@ -1,6 +1,5 @@
 import {CanvasEngine} from "./canvasEngine.js";
 
-
 const app = new CanvasEngine('canvas');
 
 document.getElementById('addCircle').addEventListener('click', () => {

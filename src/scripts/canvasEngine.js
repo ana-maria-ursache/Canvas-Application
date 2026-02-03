@@ -26,7 +26,11 @@ export class CanvasEngine {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    telemetryLog(){
+    getScreenSize(){
+        return screen.width >= 700 ? [50, 70]  : [30, 50];  
+    }
+
+    simpleLog(){
         if(!this.shapes) return; 
         
         const event = new CustomEvent('entityAdded', { 
@@ -39,7 +43,7 @@ export class CanvasEngine {
     }
 
     spawnCircle() {
-        const radius = 50;
+        const radius = this.getScreenSize()[0];
 
         const x = radius + Math.random() * (this.canvas.width - radius * 2);
         const y = radius + Math.random() * (this.canvas.height - radius * 2);
@@ -47,11 +51,11 @@ export class CanvasEngine {
         const newCircle = new Circle(x, y, radius);
         this.shapes.push(newCircle);
 
-        this.telemetryLog();
+        this.simpleLog();
     }
 
     spawnSquare() {
-        const size = 70;
+        const size = this.getScreenSize()[1];
 
         const x = Math.random() * (this.canvas.width - size);
         const y = Math.random() * (this.canvas.height - size);
@@ -59,7 +63,7 @@ export class CanvasEngine {
         const newSquare = new Square(x, y, size);
         this.shapes.push(newSquare);
 
-        this.telemetryLog();
+        this.simpleLog();
     }
 
     startLoop() {
