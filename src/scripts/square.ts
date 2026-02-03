@@ -1,12 +1,17 @@
 export class Square {
-    constructor(x, y, size = 50, color = '#00ffcc') {
+    private x: number | 0;
+    private y: number | 0;
+    private size: number | 0;
+    private color: string | "white";
+
+    constructor(x: number, y: number, size = 50, color = '#00ffcc') {
         this.x = x;
         this.y = y;
         this.size = size;
         this.color = color;
     }
 
-    draw(ctx) {
+    draw(ctx: CanvasRenderingContext2D ): void {
         // Needed so that the clearRect doesn't have side effects
         ctx.beginPath(); 
 

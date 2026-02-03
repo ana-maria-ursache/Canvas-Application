@@ -1,12 +1,17 @@
 export class Circle {
-    constructor(x, y, radius = 25, color = '#ffa6a6') {
+    private x: number | 0;
+    private y: number | 0;
+    private radius: number | 0;
+    private color: string | "white";
+    
+    constructor(x: number, y: number, radius = 25, color = '#ffa6a6') {
         this.x = x;
         this.y = y;
         this.radius = radius;
         this.color = color;
     }
 
-    draw(ctx) {
+    draw(ctx: CanvasRenderingContext2D ): void {
         ctx.beginPath();
         
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);

@@ -1,4 +1,13 @@
 export class TelemetryManager {
+
+    private scrollX: HTMLElement | null;
+    private scrollY: HTMLElement | null;
+    private winElem: HTMLElement | null;
+    private frameElem: HTMLElement | null;
+    private dprElem: HTMLElement | null;
+    private screenOrient: HTMLElement | null;
+
+
     constructor() {
         this.scrollX = document.getElementById('scrollPosX');
         this.scrollY = document.getElementById('scrollPosY');
@@ -6,9 +15,6 @@ export class TelemetryManager {
         this.frameElem = document.getElementById('frameRate');
         this.dprElem = document.getElementById('dpr');
         this.screenOrient=document.getElementById('screenOrientation');
-
-        this.performance = performance.now();
-        this.frameCount = 0;
 
         this.initListeners();
     }
@@ -20,35 +26,32 @@ export class TelemetryManager {
         window.addEventListener('resize', () => this.updateDimensions());
         window.addEventListener('deviceorientation', () => this.updateDPR());
         window.addEventListener('orientationchange', () => this.updateScreenOrient());
+
         this.updateScroll();
         this.updateDimensions();
         this.updateDPR();
         this.updateScreenOrient();
     }
 
-    updateScreenOrient(){
+    updateScreenOrient(): void{
         if(this.screenOrient){
             this.screenOrient.innerText = window.screen.orientation.type;
         }
     }
 
-    updateDPR() {
+    updateDPR(): void{
         if (this.dprElem) {
             this.dprElem.innerText = window.devicePixelRatio.toFixed(1);
         }
     }
 
-    updateScroll() {
+    updateScroll(): void{
         if (this.scrollX && this.scrollY) {
-            const x = Math.round(window.scrollX);
-            const y = Math.round(window.scrollY);
+            const x: number = Math.round(window.scrollX);
+            const y: number = Math.round(window.scrollY);
 
             this.scrollX.innerText = `${x}px`;
             this.scrollY.innerText = `${y}px`;
-        }
-        else{
-            this.scrollX.innerText = `-`;
-            this.scrollY.innerText = `-`;
         }
     }
 
@@ -58,7 +61,7 @@ export class TelemetryManager {
         }
     }
 
-    updateFPS(currentTimeDiff) {
+    updateFPS(currentTimeDiff: number) {
         if (this.frameElem) {
             this.frameElem.innerText = currentTimeDiff.toFixed(1);
         }
