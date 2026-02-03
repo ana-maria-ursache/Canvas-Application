@@ -8,6 +8,7 @@ body {
 }
 body .app-container {
   display: flex;
+  justify-content: center;
   height: 100vh;
   padding: 15px;
   box-sizing: border-box;
@@ -47,6 +48,9 @@ body .app-container .details-panel button {
   cursor: pointer;
   transition: all 0.2s ease;
 }
+body .app-container .details-panel button:last-child {
+  margin-top: 20px;
+}
 body .app-container .details-panel button:hover {
   background-color: #333;
   border-color: #00ffcc;
@@ -76,6 +80,7 @@ body .app-container #canvas {
   border: 1px solid #333;
   border-radius: 12px;
   flex-grow: 1;
+  max-width: 80%;
   height: 100%;
 }
 

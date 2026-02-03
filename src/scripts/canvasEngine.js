@@ -21,38 +21,56 @@ export class CanvasEngine {
         this.canvas.height = this.canvas.clientHeight;
     }
 
+    clearRender(){
+        this.shapes = [];
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    telemetryLog(){
+        if(!this.shapes) return; 
+        
+        const event = new CustomEvent('entityAdded', { 
+            detail: { 
+                shapes: [...this.shapes],
+                count: this.shapes.length 
+            } 
+        });
+        window.dispatchEvent(event);
+    }
+
     spawnCircle() {
-        const radius = 25;
-        // Calculation: Canvas Dimension - (Radius * 2) to stay inside borders
+        const radius = 50;
+
         const x = radius + Math.random() * (this.canvas.width - radius * 2);
         const y = radius + Math.random() * (this.canvas.height - radius * 2);
 
         const newCircle = new Circle(x, y, radius);
         this.shapes.push(newCircle);
 
-        const event = new CustomEvent('entityAdded', { 
-            detail: { count: this.shapes.length } 
-        });
-        window.dispatchEvent(event);
+        this.telemetryLog();
     }
 
     spawnSquare() {
-    const size = 50;
-    // Calculation: Stay inside borders 
-    const x = Math.random() * (this.canvas.width - size);
-    const y = Math.random() * (this.canvas.height - size);
+        const size = 70;
 
-    const newSquare = new Square(x, y, size);
-    this.shapes.push(newSquare);
-}
+        const x = Math.random() * (this.canvas.width - size);
+        const y = Math.random() * (this.canvas.height - size);
+
+        const newSquare = new Square(x, y, size);
+        this.shapes.push(newSquare);
+
+        this.telemetryLog();
+    }
 
     startLoop() {
-        const render = (timestamp) => {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        const render = () => {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // from the 2d context
 
             this.shapes.forEach(shape => shape.draw(this.ctx));
 
-            requestAnimationFrame(render);
+            // window function to use render for drawing
+            // instead of setInterval, that doesn't stop when changing the tab
+            requestAnimationFrame(render); 
         };
         requestAnimationFrame(render);
     }

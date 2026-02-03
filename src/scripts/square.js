@@ -6,19 +6,16 @@ export class Square {
         this.color = color;
     }
 
-    /**
-     * @param {CanvasRenderingContext2D} ctx 
-     */
     draw(ctx) {
-        ctx.beginPath();
+        // Needed so that the clearRect doesn't have side effects
+        ctx.beginPath(); 
+
         ctx.fillStyle = this.color;
         
         ctx.shadowBlur = 15;
         ctx.shadowColor = this.color;
         
-        ctx.fillRect(this.x, this.y, this.size, this.size);
-        
-        ctx.shadowBlur = 0;
+        ctx.fillRect(this.x, this.y, this.size, this.size);   
         ctx.closePath();
     }
 }
