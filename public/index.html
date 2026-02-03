@@ -15,12 +15,16 @@
                 <h3>Controls:</h3>
                 <button id="addSquare">Add Square</button>
                 <button id="addCircle">Add Circle</button>
+                <button id="clear">Clear Canvas</button>
             </div>
             <div id="telemetry">
                 <h3>System Logs:</h3>
-                <p>Scroll Y: <span id="scrollPos">0</span>px</p>
-                <p>Window: <span id="winDim">0x0</span></p>
-                <p>Frame Time: <span id="frameRate">0</span>ms</p>
+                <p>Scroll X: <span id="scrollPosX"></span></p>
+                <p>Scroll Y: <span id="scrollPosY"></span></p>
+                <p>Device-Pixel Ratio: <span id="dpr"></span></p>
+                <p>Screen Orientation: <span id="screenOrientation"></span></p>
+                <p>Window: <span id="winDim"></span></p>
+                <p>Frame Time: <span id="frameRate"></span>ms</p>
             </div>
         </aside>
         <canvas id="canvas"></canvas>
