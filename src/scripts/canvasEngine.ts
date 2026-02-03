@@ -1,6 +1,6 @@
 import { Square } from "./SquareClass";
 import { Circle } from "./CircleClass";
-import { TelemetryManager } from "./Telemetry";
+import { TelemetryManager } from "./telemetry";
 import { IShape } from "./IShape";
 
 export class CanvasEngine {
@@ -11,6 +11,10 @@ export class CanvasEngine {
     private lastUpdateTime: number;
     private currentTimeDiff: number;
     private currentDiff: number;
+
+    private isDragging: boolean = false;
+    private selectedShape: IShape | null = null;
+    private dragOffset = { x: 0, y: 0 };
 
     constructor(canvasId: string) {
         const canvasElement = document.getElementById(canvasId) as HTMLCanvasElement;
@@ -34,6 +38,36 @@ export class CanvasEngine {
         this.resize();
         window.addEventListener('resize', () => this.resize());
         this.startLoop();
+
+        this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
+        this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+        window.addEventListener('mouseup', () => this.isDragging = false);
+    }
+
+    private handleMouseDown(e: MouseEvent): void {
+        const rect = this.canvas.getBoundingClientRect();
+        
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        for (let i = this.shapes.length - 1; i >= 0; i--) {
+            const shape = this.shapes[i];
+            if (shape && shape.isHit(mouseX, mouseY)) { 
+                this.selectedShape = shape;
+                this.isDragging = true;
+                this.dragOffset.x = mouseX - shape.x;
+                this.dragOffset.y = mouseY - shape.y;
+                break;
+            }
+        }
+    }
+
+    private handleMouseMove(e: MouseEvent): void {
+        if (this.isDragging && this.selectedShape) {
+            const rect = this.canvas.getBoundingClientRect();
+            this.selectedShape.x = e.clientX - rect.left - this.dragOffset.x;
+            this.selectedShape.y = e.clientY - rect.top - this.dragOffset.y;
+        }
     }
 
     private resize(): void {
@@ -60,25 +94,25 @@ export class CanvasEngine {
         window.dispatchEvent(event);
     }
 
-    public spawnCircle(): void {
+    public spawnCircle(x?: number, y?: number): void {
         const [radius] = this.getScreenSize();
 
-        const x = radius + Math.random() * (this.canvas.width - radius * 2);
-        const y = radius + Math.random() * (this.canvas.height - radius * 2);
+        const posX = x ? x : radius + Math.random() * (this.canvas.width - radius * 2);
+        const posY = y ? y : radius + Math.random() * (this.canvas.height - radius * 2);
 
-        const newCircle = new Circle(x, y, radius);
+        const newCircle = new Circle(posX, posY, radius);
         this.shapes.push(newCircle);
 
         this.simpleLog();
     }
 
-    public spawnSquare(): void {
+    public spawnSquare(x?: number, y?: number): void {
         const [, size] = this.getScreenSize();
 
-        const x = Math.random() * (this.canvas.width - size);
-        const y = Math.random() * (this.canvas.height - size);
+        const posX = x ? x : Math.random() * (this.canvas.width - size);
+        const posY = y ? y : Math.random() * (this.canvas.height - size);
 
-        const newSquare = new Square(x, y, size);
+        const newSquare = new Square(posX, posY, size);
         this.shapes.push(newSquare);
 
         this.simpleLog();

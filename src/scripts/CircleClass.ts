@@ -1,10 +1,10 @@
 import { IShape } from "./IShape";
 
 export class Circle implements IShape{
-    private x: number | 0;
-    private y: number | 0;
-    private radius: number | 0;
-    private color: string | "white";
+    public x: number;
+    public y: number;
+    private radius: number;
+    private color: string;
     
     constructor(x: number, y: number, radius: number = 25, color: string = '#ffa6a6') {
         this.x = x;
@@ -13,7 +13,7 @@ export class Circle implements IShape{
         this.color = color;
     }
 
-    draw(ctx: CanvasRenderingContext2D ): void {
+    public draw(ctx: CanvasRenderingContext2D ): void {
         ctx.beginPath();
         
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
@@ -25,5 +25,11 @@ export class Circle implements IShape{
         ctx.fill();
         
         ctx.closePath();
+    }
+
+    public isHit(x: number, y: number): boolean {
+        const dx = x - this.x;
+        const dy = y - this.y;
+        return Math.sqrt(dx * dx + dy * dy) <= this.radius;
     }
 }
