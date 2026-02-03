@@ -1,15 +1,12 @@
-import { Square } from "./square";
-import { Circle } from "./circle";
-import { TelemetryManager } from "./telemetry";
-
-interface Shape {
-    draw(ctx: CanvasRenderingContext2D): void;
-}
+import { Square } from "./SquareClass";
+import { Circle } from "./CircleClass";
+import { TelemetryManager } from "./Telemetry";
+import { IShape } from "./IShape";
 
 export class CanvasEngine {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
-    private shapes: Shape[]; 
+    private shapes: IShape[]; 
     private telemetry: TelemetryManager;
     private lastUpdateTime: number;
     private currentTimeDiff: number;

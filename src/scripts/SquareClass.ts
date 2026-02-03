@@ -1,10 +1,12 @@
-export class Square {
+import { Shape } from "./IShape";
+
+export class Square implements Shape {
     private x: number | 0;
     private y: number | 0;
     private size: number | 0;
     private color: string | "white";
 
-    constructor(x: number, y: number, size = 50, color = '#00ffcc') {
+    constructor(x: number, y: number, size: number = 50, color: string = '#00ffcc') {
         this.x = x;
         this.y = y;
         this.size = size;

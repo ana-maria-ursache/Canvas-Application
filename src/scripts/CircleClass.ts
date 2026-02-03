@@ -1,10 +1,12 @@
-export class Circle {
+import { IShape } from "./IShape";
+
+export class Circle implements IShape{
     private x: number | 0;
     private y: number | 0;
     private radius: number | 0;
     private color: string | "white";
     
-    constructor(x: number, y: number, radius = 25, color = '#ffa6a6') {
+    constructor(x: number, y: number, radius: number = 25, color: string = '#ffa6a6') {
         this.x = x;
         this.y = y;
         this.radius = radius;

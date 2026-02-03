@@ -1,4 +1,4 @@
-import {CanvasEngine} from "./canvasEngine.js";
+import { CanvasEngine } from "./CanvasEngine";
 
 const app = new CanvasEngine('canvas');
 
