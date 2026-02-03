@@ -1,44 +1,56 @@
-import { Square } from "./square.js";
-import { Circle } from "./circle.js";
-import { TelemetryManager } from "./telemetry.js";
-
+import { Square } from "./SquareClass";
+import { Circle } from "./CircleClass";
+import { TelemetryManager } from "./Telemetry";
+import { IShape } from "./IShape";
 
 export class CanvasEngine {
-    constructor(canvasId) {
-        this.canvas = document.getElementById(canvasId);
-        this.ctx = this.canvas.getContext('2d');
+    private canvas: HTMLCanvasElement;
+    private ctx: CanvasRenderingContext2D;
+    private shapes: IShape[]; 
+    private telemetry: TelemetryManager;
+    private lastUpdateTime: number;
+    private currentTimeDiff: number;
+    private currentDiff: number;
+
+    constructor(canvasId: string) {
+        const canvasElement = document.getElementById(canvasId) as HTMLCanvasElement;
+        if (!canvasElement) {
+            throw new Error(`Canvas element with id ${canvasId} not found.`);
+        }
+        
+        this.canvas = canvasElement;
+        this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
         this.shapes = []; 
         
         this.telemetry = new TelemetryManager();
         this.lastUpdateTime = 0;
         this.currentTimeDiff = 0;
+        this.currentDiff = 0;
 
         this.init();
     }
 
-    init() {
+    private init(): void {
         this.resize();
         window.addEventListener('resize', () => this.resize());
         this.startLoop();
     }
 
-    resize() {
+    private resize(): void {
         this.canvas.width = this.canvas.clientWidth;
         this.canvas.height = this.canvas.clientHeight;
     }
 
-    clearRender(){
+    public clearRender(): void {
         this.shapes = [];
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    getScreenSize(){
-        return screen.width >= 700 ? [50, 70]  : [30, 50];  
+    private getScreenSize(): [number, number] {
+        return screen.width >= 700 ? [50, 70] : [30, 50];  
     }
 
-    simpleLog(){
-        if(!this.shapes) return; 
-        
+    private simpleLog(): void {
         const event = new CustomEvent('entityAdded', { 
             detail: { 
                 shapes: [...this.shapes],
@@ -48,8 +60,8 @@ export class CanvasEngine {
         window.dispatchEvent(event);
     }
 
-    spawnCircle() {
-        const radius = this.getScreenSize()[0];
+    public spawnCircle(): void {
+        const [radius] = this.getScreenSize();
 
         const x = radius + Math.random() * (this.canvas.width - radius * 2);
         const y = radius + Math.random() * (this.canvas.height - radius * 2);
@@ -60,8 +72,8 @@ export class CanvasEngine {
         this.simpleLog();
     }
 
-    spawnSquare() {
-        const size = this.getScreenSize()[1];
+    public spawnSquare(): void {
+        const [, size] = this.getScreenSize();
 
         const x = Math.random() * (this.canvas.width - size);
         const y = Math.random() * (this.canvas.height - size);
@@ -72,22 +84,20 @@ export class CanvasEngine {
         this.simpleLog();
     }
 
-    startLoop() {
-        const render = (timestamp) => {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // from the 2d context
+    private startLoop(): void {
+        const render = (timestamp: number) => {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
             this.shapes.forEach(shape => shape.draw(this.ctx));
         
-            this.currentDiff= timestamp - this.currentTimeDiff;
+            this.currentDiff = timestamp - this.currentTimeDiff;
             this.currentTimeDiff = timestamp;
             
-            if(timestamp - this.lastUpdateTime >= 1000){
+            if (timestamp - this.lastUpdateTime >= 1000) {
                 this.telemetry.updateFPS(this.currentDiff);
                 this.lastUpdateTime = timestamp;
             }
 
-            // window function to use render for drawing
-            // instead of setInterval, that doesn't stop when changing the tab
             requestAnimationFrame(render); 
         };
         requestAnimationFrame(render);
