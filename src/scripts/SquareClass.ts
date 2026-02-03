@@ -1,10 +1,10 @@
 import { IShape } from "./IShape";
 
 export class Square implements IShape {
-    private x: number | 0;
-    private y: number | 0;
-    private size: number | 0;
-    private color: string | "white";
+    public x: number;
+    public y: number;
+    private size: number;
+    private color: string;
 
     constructor(x: number, y: number, size: number = 50, color: string = '#00ffcc') {
         this.x = x;
@@ -13,7 +13,7 @@ export class Square implements IShape {
         this.color = color;
     }
 
-    draw(ctx: CanvasRenderingContext2D ): void {
+    public draw(ctx: CanvasRenderingContext2D ): void {
         // Needed so that the clearRect doesn't have side effects
         ctx.beginPath(); 
 
@@ -25,4 +25,30 @@ export class Square implements IShape {
         ctx.fillRect(this.x, this.y, this.size, this.size);   
         ctx.closePath();
     }
+
+    public isHit(x: number, y: number): boolean {
+        return x >= this.x && x <= this.x + this.size &&
+               y >= this.y && y <= this.y + this.size;
+    }
+    
+    public collidesWith(other: IShape): boolean {
+        // is a square
+        if ((other as any).size !== undefined) {
+            return !(this.x + this.size < other.x ||
+                     this.x > other.x + (other as any).size ||
+                     this.y + this.size < other.y ||
+                     this.y > other.y + (other as any).size);
+        }
+        // is a circle
+        if ((other as any).radius !== undefined) {
+            const circle = other as any;
+            const closestX = Math.max(this.x, Math.min(circle.x, this.x + this.size));
+            const closestY = Math.max(this.y, Math.min(circle.y, this.y + this.size));
+
+            const distX = circle.x - closestX;
+            const distY = circle.y - closestY;
+            return (distX * distX + distY * distY) < (circle.radius * circle.radius);
+        }
+        return false;
+    }   
 }

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Canva Application">
     <link rel="stylesheet" href="./styles/main-style.css">
-    <script src="../src/scripts/App.ts" type="module"></script>
+    <script src="./src/scripts/app.ts" type="module"></script>
     <title>Canva Application</title>
 </head>
 <body>
@@ -13,8 +13,8 @@
         <aside class="details-panel">
             <div class="options">
                 <h3>Controls:</h3>
-                <button id="addSquare">Add Square</button>
-                <button id="addCircle">Add Circle</button>
+                <button id="addSquare" draggable="true">Add Square</button>
+                <button id="addCircle" draggable="true">Add Circle</button>
                 <button id="clear">Clear Canvas</button>
             </div>
             <div id="telemetry">
