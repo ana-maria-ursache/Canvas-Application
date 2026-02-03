@@ -5,13 +5,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "start": "lite-server"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "lite-server": "^2.6.1"
-  }
+  },
+  "devDependencies": {
+    "vite": "^7.3.1"
+  },
+  "keywords": []
 }
