@@ -10,12 +10,10 @@ document.getElementById('addSquare')?.addEventListener('click', () => {
     app.spawnSquare();
 });
 
-// app.ts
 const buttons = ['addSquare', 'addCircle'];
 buttons.forEach(id => {
     const btn = document.getElementById(id);
     btn?.addEventListener('dragstart', (e) => {
-        // Stocăm ID-ul butonului pentru a ști ce formă să creăm la drop
         e.dataTransfer?.setData('shapeType', id);
     });
 });
@@ -26,7 +24,6 @@ canvasElement?.addEventListener('dragover', (e) => e.preventDefault()); // Permi
 canvasElement?.addEventListener('drop', (e) => {
     e.preventDefault();
     const shapeType = e.dataTransfer?.getData('shapeType');
-    // Calculăm poziția relativă la canvas
     const rect = (e.target as HTMLCanvasElement).getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;

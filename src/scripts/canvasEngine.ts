@@ -46,7 +46,7 @@ export class CanvasEngine {
 
     private handleMouseDown(e: MouseEvent): void {
         const rect = this.canvas.getBoundingClientRect();
-        
+
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
 
@@ -124,6 +124,9 @@ export class CanvasEngine {
 
             this.shapes.forEach(shape => shape.draw(this.ctx));
         
+            this.checkCollisions();
+
+
             this.currentDiff = timestamp - this.currentTimeDiff;
             this.currentTimeDiff = timestamp;
             
@@ -135,5 +138,54 @@ export class CanvasEngine {
             requestAnimationFrame(render); 
         };
         requestAnimationFrame(render);
+    }
+
+    private checkCollisions(): void {
+
+        this.shapes.forEach(shape => { // To reset the colors after being red for collision
+            if (shape instanceof Circle) {
+                (shape as any).color = '#ffa6a6';
+            } else if (shape instanceof Square) {
+                (shape as any).color = '#00ffcc';
+            }
+        });
+        for (let i = 0; i < this.shapes.length; i++) {
+            for (let j = i + 1; j < this.shapes.length; j++) {
+                const shape1 = this.shapes[i];
+                const shape2 = this.shapes[j];
+                
+                if (shape1 && shape2 && shape1.collidesWith(shape2)) {
+                    this.collidedWith(shape1, shape2);
+                }else if (shape1 && shape2) {
+                    this.noLongerCollidedWith(shape1, shape2);
+                }
+            }
+        }
+    }
+
+    private collidedWith(shape1: IShape, shape2: IShape): void {
+        (shape1 as any).color = '#ff0000';
+        (shape2 as any).color = '#ff0000';
+        
+        // Dispatch collision event
+        const event = new CustomEvent('shapeCollision', {
+            detail: {
+                shape1,
+                shape2,
+                timestamp: Date.now()
+            }
+        });
+        window.dispatchEvent(event);
+    }
+
+    private noLongerCollidedWith(shape1: IShape, shape2: IShape): void {
+        const event = new CustomEvent('shapeCollisionEnd', {
+            detail: {
+                shape1,
+                shape2,
+                timestamp: Date.now()
+            }
+        });
+        window.dispatchEvent(event);
     }
 }

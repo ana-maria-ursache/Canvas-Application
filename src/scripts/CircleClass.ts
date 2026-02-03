@@ -32,4 +32,27 @@ export class Circle implements IShape{
         const dy = y - this.y;
         return Math.sqrt(dx * dx + dy * dy) <= this.radius;
     }
+
+    public collidesWith(other: IShape): boolean {
+        const dx = other.x - this.x;
+        const dy = other.y - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        // is a circle
+        if ((other as any).radius !== undefined) {
+            return distance < this.radius + (other as any).radius;
+        }
+        // is a square
+        if ((other as any).size !== undefined) {
+            const size = (other as any).size;
+
+            const closestX = Math.max(other.x, Math.min(this.x, other.x + size));
+            const closestY = Math.max(other.y, Math.min(this.y, other.y + size));
+
+            const distX = this.x - closestX;
+            const distY = this.y - closestY;
+            return (distX * distX + distY * distY) < (this.radius * this.radius);
+        }
+        return false;
+    }
 }
