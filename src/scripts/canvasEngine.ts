@@ -1,20 +1,28 @@
 import { Square } from "./SquareClass";
 import { Circle } from "./CircleClass";
+import { Ellipse } from "./EllipseClass";
+import { Rectangle } from "./RectangleClass";
 import { TelemetryManager } from "./telemetry";
-import { IShape } from "./IShape";
+import { Shape } from "./Shape";
 
 export class CanvasEngine {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
-    private shapes: IShape[]; 
+    private shapes: Shape[]; 
     private telemetry: TelemetryManager;
     private lastUpdateTime: number;
     private currentTimeDiff: number;
     private currentDiff: number;
 
     private isDragging: boolean = false;
-    private selectedShape: IShape | null = null;
+    private selectedShape: Shape | null = null;
     private dragOffset = { x: 0, y: 0 };
+
+    private nrOfSQuares: number = 0;
+    private nrOfRect: number = 0;
+    private nrOfCircles: number = 0;
+    private nrOfEllipse: number = 0;
+
 
     constructor(canvasId: string) {
         const canvasElement = document.getElementById(canvasId) as HTMLCanvasElement;
@@ -77,7 +85,12 @@ export class CanvasEngine {
 
     public clearRender(): void {
         this.shapes = [];
+        this.nrOfSQuares = 0;
+        this.nrOfRect = 0;
+        this.nrOfCircles = 0;
+        this.nrOfEllipse = 0;
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.updateUI();
     }
 
     private getScreenSize(): [number, number] {
@@ -103,6 +116,8 @@ export class CanvasEngine {
         const newCircle = new Circle(posX, posY, radius);
         this.shapes.push(newCircle);
 
+        this.nrOfCircles++;
+        this.updateUI();
         this.simpleLog();
     }
 
@@ -115,7 +130,53 @@ export class CanvasEngine {
         const newSquare = new Square(posX, posY, size);
         this.shapes.push(newSquare);
 
+        this.nrOfSQuares++;
+        this.updateUI();
         this.simpleLog();
+    }
+
+
+    public spawnRectangle(x?: number, y?: number): void {
+        const [, baseSize] = this.getScreenSize(); 
+        
+        const width = baseSize * 1.5; 
+        const height = baseSize;
+
+        const posX = x ?? Math.random() * (this.canvas.width - width);
+        const posY = y ?? Math.random() * (this.canvas.height - height);
+
+        const newRect = new Rectangle(posX, posY, width, height, '#4800ff');
+        this.shapes.push(newRect);
+
+        this.nrOfRect++;
+        this.updateUI(); 
+        this.simpleLog(); 
+    }
+
+    public spawnEllipse(x?: number, y?: number): void {
+        const [baseRadius] = this.getScreenSize(); 
+        
+        const rx = baseRadius * 1.5;
+        const ry = baseRadius;
+
+        const posX = x ?? rx + Math.random() * (this.canvas.width - rx * 2);
+        const posY = y ?? ry + Math.random() * (this.canvas.height - ry * 2);
+
+        const newEllipse = new Ellipse(posX, posY, rx, ry, '#ffd21d');
+        this.shapes.push(newEllipse);
+
+        this.nrOfEllipse++;
+        this.updateUI(); 
+        this.simpleLog(); 
+    }
+
+    public getData(): number[]{
+        return [this.nrOfSQuares, this.nrOfRect, this.nrOfCircles, this.nrOfEllipse];
+    }
+
+    private updateUI(): void {
+        const data = this.getData();
+        this.telemetry.updateShapesCount(data);
     }
 
     private startLoop(): void {
@@ -144,9 +205,9 @@ export class CanvasEngine {
 
         this.shapes.forEach(shape => { // To reset the colors after being red for collision
             if (shape instanceof Circle) {
-                (shape as any).color = '#ffa6a6';
+                (shape as unknown).color = '#ffa6a6';
             } else if (shape instanceof Square) {
-                (shape as any).color = '#00ffcc';
+                (shape as unknown).color = '#00ffcc';
             }
         });
         for (let i = 0; i < this.shapes.length; i++) {
@@ -163,11 +224,10 @@ export class CanvasEngine {
         }
     }
 
-    private collidedWith(shape1: IShape, shape2: IShape): void {
-        (shape1 as any).color = '#ff0000';
-        (shape2 as any).color = '#ff0000';
+    private collidedWith(shape1: Shape, shape2: Shape): void {
+        (shape1 as unknown).color = '#ff0000';
+        (shape2 as unknown).color = '#ff0000';
         
-        // Dispatch collision event
         const event = new CustomEvent('shapeCollision', {
             detail: {
                 shape1,
@@ -178,7 +238,7 @@ export class CanvasEngine {
         window.dispatchEvent(event);
     }
 
-    private noLongerCollidedWith(shape1: IShape, shape2: IShape): void {
+    private noLongerCollidedWith(shape1: Shape, shape2: Shape): void {
         const event = new CustomEvent('shapeCollisionEnd', {
             detail: {
                 shape1,

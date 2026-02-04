@@ -13,18 +13,27 @@
         <aside class="details-panel">
             <div class="options">
                 <h3>Controls:</h3>
-                <button id="addSquare" draggable="true">Add Square</button>
-                <button id="addCircle" draggable="true">Add Circle</button>
+                <button id="addSquare" draggable="true">Square</button>
+                <button id="addRectangle" draggable="true">Rectangle</button>
+                <button id="addCircle" draggable="true">Circle</button>
+                <button id="addEllipses" draggable="true">Ellipse</button>
                 <button id="clear">Clear Canvas</button>
             </div>
             <div id="telemetry">
+                <h3>Shapes counter:</h3>
+                <p>Squares: <span id="nrOfSQuares">0</span></p>
+                <p>Rectangles:  <span id="nrOfRect">0</span></p>
+                <p>Circles:  <span id="nrOfCircles">0</span></p>
+                <p>Ellipses:  <span id="nrOfEllipse">0</span></p>
+
                 <h3>System Logs:</h3>
-                <p>Scroll X: <span id="scrollPosX"></span></p>
-                <p>Scroll Y: <span id="scrollPosY"></span></p>
+                <!-- <p>Scroll X: <span id="scrollPosX"></span></p>
+                <p>Scroll Y: <span id="scrollPosY"></span></p> -->
                 <p>Device-Pixel Ratio: <span id="dpr"></span></p>
                 <p>Screen Orientation: <span id="screenOrientation"></span></p>
                 <p>Window: <span id="winDim"></span></p>
                 <p>Frame Time: <span id="frameRate"></span>ms</p>
+                
             </div>
         </aside>
         <canvas id="canvas"></canvas>

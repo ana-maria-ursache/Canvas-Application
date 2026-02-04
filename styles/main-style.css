@@ -4,7 +4,6 @@ body {
   padding: 0;
   font-family: "Inter", -apple-system, sans-serif;
   color: #f3fff7;
-  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,7 +11,7 @@ body {
 body .app-container {
   display: flex;
   justify-content: center;
-  height: 100vh;
+  height: 120vh;
   padding: 15px;
   box-sizing: border-box;
   gap: 15px;
@@ -41,7 +40,7 @@ body .app-container .details-panel .options h3, body .app-container .details-pan
 }
 body .app-container .details-panel button {
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #444;
   border-radius: 8px;
@@ -53,7 +52,7 @@ body .app-container .details-panel button {
   font-size: 14px;
 }
 body .app-container .details-panel button:last-child {
-  margin-top: 20px;
+  margin-top: 12px;
 }
 body .app-container .details-panel button:hover {
   background-color: #333;
@@ -70,7 +69,7 @@ body .app-container .details-panel #telemetry p {
   background: #0a0a0a;
   padding: 10px;
   border-radius: 6px;
-  margin: 8px 0;
+  margin: 10px 0 20px 0;
   border: 1px solid #222;
 }
 body .app-container .details-panel #telemetry p span {
