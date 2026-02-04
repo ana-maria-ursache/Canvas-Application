@@ -16,6 +16,12 @@ export class CanvasEngine {
     private selectedShape: IShape | null = null;
     private dragOffset = { x: 0, y: 0 };
 
+    private nrOfSQuares: number = 0;
+    private nrOfRect: number = 0;
+    private nrOfCircles: number = 0;
+    private nrOfElipse: number = 0;
+
+
     constructor(canvasId: string) {
         const canvasElement = document.getElementById(canvasId) as HTMLCanvasElement;
         if (!canvasElement) {
@@ -77,7 +83,12 @@ export class CanvasEngine {
 
     public clearRender(): void {
         this.shapes = [];
+        this.nrOfSQuares = 0;
+        this.nrOfRect = 0;
+        this.nrOfCircles = 0;
+        this.nrOfElipse = 0;
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.updateUI();
     }
 
     private getScreenSize(): [number, number] {
@@ -103,6 +114,8 @@ export class CanvasEngine {
         const newCircle = new Circle(posX, posY, radius);
         this.shapes.push(newCircle);
 
+        this.nrOfCircles++;
+        this.updateUI();
         this.simpleLog();
     }
 
@@ -115,7 +128,18 @@ export class CanvasEngine {
         const newSquare = new Square(posX, posY, size);
         this.shapes.push(newSquare);
 
+        this.nrOfSQuares++;
+        this.updateUI();
         this.simpleLog();
+    }
+
+    public getData(): number[]{
+        return [this.nrOfSQuares, this.nrOfRect, this.nrOfCircles, this.nrOfElipse];
+    }
+
+    private updateUI(): void {
+        const data = this.getData(); // Returnează [sq, rect, circ, elipse]
+        this.telemetry.updateShapesCount(data);
     }
 
     private startLoop(): void {
