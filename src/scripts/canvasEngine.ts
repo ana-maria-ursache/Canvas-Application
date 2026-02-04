@@ -49,7 +49,7 @@ export class CanvasEngine {
 
         this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
         this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-        window.addEventListener('mouseup', () => this.isDragging = false);
+        window.addEventListener('mouseup', (e) => this.handleMouseUp(e));
     }
 
     private handleMouseDown(e: MouseEvent): void {
@@ -76,6 +76,16 @@ export class CanvasEngine {
             this.selectedShape.x = e.clientX - rect.left - this.dragOffset.x;
             this.selectedShape.y = e.clientY - rect.top - this.dragOffset.y;
         }
+    }
+
+    private handleMouseUp(e: MouseEvent): void {
+        if (this.isDragging && this.selectedShape) {
+            if ((this.selectedShape as any).color === '#ff0000') {
+                return;
+            }
+        }
+        this.isDragging = false;
+        this.selectedShape = null;
     }
 
     private resize(): void {
