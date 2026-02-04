@@ -18,7 +18,7 @@ document.getElementById('addRectangle')?.addEventListener('click', () => {
     app.spawnRectangle();
 });
 
-const buttons = ['addSquare', 'addCircle'];
+const buttons = ['addSquare', 'addCircle', 'addEllipses', 'addRectangle'];
 buttons.forEach(id => {
     const btn = document.getElementById(id);
     btn?.addEventListener('dragstart', (e) => {
@@ -38,6 +38,8 @@ canvasElement?.addEventListener('drop', (e) => {
 
     if (shapeType === 'addSquare') app.spawnSquare(x, y);
     if (shapeType === 'addCircle') app.spawnCircle(x, y);
+    if (shapeType === 'addEllipses') app.spawnEllipse(x, y);
+    if (shapeType === 'addRectangle') app.spawnRectangle(x, y);
 });
 
 document.getElementById('clear')?.addEventListener('click', () =>{

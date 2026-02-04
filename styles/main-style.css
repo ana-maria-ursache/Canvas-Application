@@ -38,6 +38,11 @@ body .app-container .details-panel .options h3, body .app-container .details-pan
   letter-spacing: 1.5px;
   font-weight: 700;
 }
+body .app-container .details-panel .options .controls-class, body .app-container .details-panel #telemetry .controls-class {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
 body .app-container .details-panel button {
   width: 100%;
   padding: 10px;
@@ -51,9 +56,6 @@ body .app-container .details-panel button {
   transition: all 0.2s ease;
   font-size: 14px;
 }
-body .app-container .details-panel button:last-child {
-  margin-top: 12px;
-}
 body .app-container .details-panel button:hover {
   background-color: #333;
   border-color: #00ffcc;
@@ -61,6 +63,9 @@ body .app-container .details-panel button:hover {
 }
 body .app-container .details-panel button:active {
   transform: scale(0.98);
+}
+body .app-container .details-panel button#clear {
+  margin-top: 10px;
 }
 body .app-container .details-panel #telemetry p {
   font-family: "Courier New", monospace;

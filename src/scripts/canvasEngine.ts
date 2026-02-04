@@ -49,7 +49,7 @@ export class CanvasEngine {
 
         this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
         this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-        window.addEventListener('mouseup', () => this.isDragging = false);
+        window.addEventListener('mouseup', (e) => this.handleMouseUp(e));
     }
 
     private handleMouseDown(e: MouseEvent): void {
@@ -76,6 +76,16 @@ export class CanvasEngine {
             this.selectedShape.x = e.clientX - rect.left - this.dragOffset.x;
             this.selectedShape.y = e.clientY - rect.top - this.dragOffset.y;
         }
+    }
+
+    private handleMouseUp(e: MouseEvent): void {
+        if (this.isDragging && this.selectedShape) {
+            if ((this.selectedShape as any).color === '#ff0000') {
+                return;
+            }
+        }
+        this.isDragging = false;
+        this.selectedShape = null;
     }
 
     private resize(): void {
@@ -135,7 +145,6 @@ export class CanvasEngine {
         this.simpleLog();
     }
 
-
     public spawnRectangle(x?: number, y?: number): void {
         const [, baseSize] = this.getScreenSize(); 
         
@@ -187,7 +196,6 @@ export class CanvasEngine {
         
             this.checkCollisions();
 
-
             this.currentDiff = timestamp - this.currentTimeDiff;
             this.currentTimeDiff = timestamp;
             
@@ -205,11 +213,16 @@ export class CanvasEngine {
 
         this.shapes.forEach(shape => { // To reset the colors after being red for collision
             if (shape instanceof Circle) {
-                (shape as unknown).color = '#ffa6a6';
+                (shape as any).color = '#ffa6a6';
             } else if (shape instanceof Square) {
-                (shape as unknown).color = '#00ffcc';
+                (shape as any).color = '#00ffcc';
+            } else if (shape instanceof Ellipse) {
+                (shape as any).color = '#ffd21d';
+            } else if (shape instanceof Rectangle) {
+                (shape as any).color = '#4800ff';
             }
         });
+
         for (let i = 0; i < this.shapes.length; i++) {
             for (let j = i + 1; j < this.shapes.length; j++) {
                 const shape1 = this.shapes[i];
@@ -225,8 +238,8 @@ export class CanvasEngine {
     }
 
     private collidedWith(shape1: Shape, shape2: Shape): void {
-        (shape1 as unknown).color = '#ff0000';
-        (shape2 as unknown).color = '#ff0000';
+        (shape1 as any).color = '#ff0000';
+        (shape2 as any).color = '#ff0000';
         
         const event = new CustomEvent('shapeCollision', {
             detail: {

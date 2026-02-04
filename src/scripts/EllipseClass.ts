@@ -1,4 +1,5 @@
 import { Shape } from "./Shape";
+import { Rectangle } from "./RectangleClass";
 
 export class Ellipse extends Shape {
     public radiusX: number;
@@ -31,6 +32,26 @@ export class Ellipse extends Shape {
     }
 
     collidesWith(other: Shape): boolean {
-        return false; 
+        if (other instanceof Ellipse) {
+            const dx = other.x - this.x;
+            const dy = other.y - this.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            const thisRadius = (this.radiusX + this.radiusY) / 2;
+            const otherRadius = (other.radiusX + other.radiusY) / 2;
+            
+            return distance < thisRadius + otherRadius;
+        } else if (other instanceof Rectangle) {
+            const closestX = Math.max(other.x, Math.min(this.x, other.x + other.width));
+            const closestY = Math.max(other.y, Math.min(this.y, other.y + other.height));
+            
+            const dx = this.x - closestX;
+            const dy = this.y - closestY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            const radius = (this.radiusX + this.radiusY) / 2;
+            return distance < radius;
+        }
+        return false;
     }
 }
