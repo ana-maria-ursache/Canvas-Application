@@ -47,7 +47,7 @@ document.getElementById('clear')?.addEventListener('click', () =>{
 interface EntityAddedEvent extends Event{
     detail: {
         count: number;
-        shapes: any[];
+        shapes: unknown[];
     }
 }
 
