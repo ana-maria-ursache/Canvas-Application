@@ -9,7 +9,7 @@ export class TelemetryManager {
     private nrOfSQuares: HTMLElement | null;
     private nrOfRect: HTMLElement | null;
     private nrOfCircles: HTMLElement | null;
-    private nrOfElipse: HTMLElement | null;
+    private nrOfEllipse: HTMLElement | null;
 
 
     constructor() {
@@ -23,7 +23,7 @@ export class TelemetryManager {
         this.nrOfSQuares = document.getElementById('nrOfSQuares');
         this.nrOfRect = document.getElementById('nrOfRect');
         this.nrOfCircles = document.getElementById('nrOfCircles');
-        this.nrOfElipse = document.getElementById('nrOfElipse');
+        this.nrOfEllipse = document.getElementById('nrOfEllipse');
 
         this.initListeners();
     }
@@ -77,11 +77,11 @@ export class TelemetryManager {
     }   
 
     public updateShapesCount(counts: number[]): void {
-        const [sq = 0 , rect = 0, circ = 0, elipse = 0] = counts;
+        const [sq = 0 , rect = 0, circ = 0, ellipse = 0] = counts;
         
         if (this.nrOfSQuares) this.nrOfSQuares.innerText = sq.toString();
         if (this.nrOfRect) this.nrOfRect.innerText = rect.toString();
         if (this.nrOfCircles) this.nrOfCircles.innerText = circ.toString();
-        if (this.nrOfElipse) this.nrOfElipse.innerText = elipse.toString();
+        if (this.nrOfEllipse) this.nrOfEllipse.innerText = ellipse.toString();
     }
 }

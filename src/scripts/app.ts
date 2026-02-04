@@ -10,6 +10,14 @@ document.getElementById('addSquare')?.addEventListener('click', () => {
     app.spawnSquare();
 });
 
+document.getElementById('addEllipses')?.addEventListener('click', () => {
+    app.spawnEllipse();
+});
+
+document.getElementById('addRectangle')?.addEventListener('click', () => {
+    app.spawnRectangle();
+});
+
 const buttons = ['addSquare', 'addCircle'];
 buttons.forEach(id => {
     const btn = document.getElementById(id);
