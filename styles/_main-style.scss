@@ -123,29 +123,42 @@ body {
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: 100%;
+            
 
             .details-panel { 
                 width: 80%; 
-                flex-direction: row;
+                flex-direction: column;
+                justify-content: center;
 
-                .options, #telemetry {
+                .options{
                     font-size: 12px;
+
+                    .controls-class{
+                        justify-content: center;
+                        justify-items: center;
+                    }
+
+                    &#clear{
+                        justify-content: center;
+                        justify-items: center;
+                    }
+                }
+
+                #telemetry {
+                    display:none;
                 }
 
                 button {
                     font-size: 12px;
-                    width: 80%;
                 }
 
-                #telemetry p { 
-                    font-size: 12px;
-
-                    span { 
-                        font-size: 12px;
-                    }
-                }
             }
+
+            #canvas {
+            max-width: 100%; 
+            width: 100%;
+            height: 400px;   
+        }
         }
     }
 }

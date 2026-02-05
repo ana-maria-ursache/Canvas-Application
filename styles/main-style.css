@@ -97,24 +97,33 @@ body .app-container #canvas {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
   }
   body .app-container .details-panel {
     width: 80%;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: center;
   }
-  body .app-container .details-panel .options, body .app-container .details-panel #telemetry {
+  body .app-container .details-panel .options {
     font-size: 12px;
+  }
+  body .app-container .details-panel .options .controls-class {
+    justify-content: center;
+    justify-items: center;
+  }
+  body .app-container .details-panel .options#clear {
+    justify-content: center;
+    justify-items: center;
+  }
+  body .app-container .details-panel #telemetry {
+    display: none;
   }
   body .app-container .details-panel button {
     font-size: 12px;
-    width: 80%;
   }
-  body .app-container .details-panel #telemetry p {
-    font-size: 12px;
-  }
-  body .app-container .details-panel #telemetry p span {
-    font-size: 12px;
+  body .app-container #canvas {
+    max-width: 100%;
+    width: 100%;
+    height: 400px;
   }
 }
 
