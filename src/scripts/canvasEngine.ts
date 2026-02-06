@@ -25,13 +25,20 @@ export class CanvasEngine {
 
 
     constructor(canvasId: string) {
-        const canvasElement = document.getElementById(canvasId) as HTMLCanvasElement;
-        if (!canvasElement) {
-            throw new Error(`Canvas element with id ${canvasId} not found.`);
-        }
-        
+        // const canvasElement = document.getElementById(canvasId) as HTMLCanvasElement; // initil cod, cast without null-check
+        // if (!canvasElement) {
+        //     throw new Error(`Canvas element with id ${canvasId} not found.`);
+        // }
+        const canvasElement = this.getRequiredEl<HTMLCanvasElement>(canvasId); // improved code with null-check, with helper function
         this.canvas = canvasElement;
-        this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
+
+        // guard for the context
+        const context = this.canvas.getContext('2d');
+        if (!context) {
+            throw new Error("Couldn't get the element.");
+        }
+        this.ctx = context;
+
         this.shapes = []; 
         
         this.telemetry = new TelemetryManager();
@@ -40,6 +47,14 @@ export class CanvasEngine {
         this.currentDiff = 0;
 
         this.init();
+    }
+
+    private getRequiredEl<T extends HTMLElement>(id: string): T {
+        const el = document.getElementById(id);
+        if (!el) {
+            throw new Error(`The element with the id "${id}" wasn't found in DOM.`);
+        }
+        return el as T;
     }
 
     private init(): void {
@@ -80,7 +95,7 @@ export class CanvasEngine {
 
     private handleMouseUp(e: MouseEvent): void {
         if (this.isDragging && this.selectedShape) {
-            if ((this.selectedShape as any).color === '#ff0000') {
+            if ((this.selectedShape).color === '#ff0000') {
                 return;
             }
         }
@@ -213,13 +228,13 @@ export class CanvasEngine {
 
         this.shapes.forEach(shape => { // To reset the colors after being red for collision
             if (shape instanceof Circle) {
-                (shape as any).color = '#ffa6a6';
+                (shape ).color = '#ffa6a6';
             } else if (shape instanceof Square) {
-                (shape as any).color = '#00ffcc';
+                (shape ).color = '#00ffcc';
             } else if (shape instanceof Ellipse) {
-                (shape as any).color = '#ffd21d';
+                (shape ).color = '#ffd21d';
             } else if (shape instanceof Rectangle) {
-                (shape as any).color = '#4800ff';
+                (shape ).color = '#4800ff';
             }
         });
 
@@ -238,8 +253,8 @@ export class CanvasEngine {
     }
 
     private collidedWith(shape1: Shape, shape2: Shape): void {
-        (shape1 as any).color = '#ff0000';
-        (shape2 as any).color = '#ff0000';
+        (shape1 ).color = '#ff0000';
+        (shape2 ).color = '#ff0000';
         
         const event = new CustomEvent('shapeCollision', {
             detail: {
