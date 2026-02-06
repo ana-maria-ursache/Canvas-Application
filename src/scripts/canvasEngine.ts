@@ -25,13 +25,20 @@ export class CanvasEngine {
 
 
     constructor(canvasId: string) {
-        const canvasElement = document.getElementById(canvasId) as HTMLCanvasElement;
-        if (!canvasElement) {
-            throw new Error(`Canvas element with id ${canvasId} not found.`);
-        }
-        
+        // const canvasElement = document.getElementById(canvasId) as HTMLCanvasElement; // initil cod, cast without null-check
+        // if (!canvasElement) {
+        //     throw new Error(`Canvas element with id ${canvasId} not found.`);
+        // }
+        const canvasElement = this.getRequiredEl<HTMLCanvasElement>(canvasId); // improved code with null-check, with helper function
         this.canvas = canvasElement;
-        this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
+
+        // guard for the context
+        const context = this.canvas.getContext('2d');
+        if (!context) {
+            throw new Error("Couldn't get the element.");
+        }
+        this.ctx = context;
+
         this.shapes = []; 
         
         this.telemetry = new TelemetryManager();
@@ -40,6 +47,14 @@ export class CanvasEngine {
         this.currentDiff = 0;
 
         this.init();
+    }
+
+    private getRequiredEl<T extends HTMLElement>(id: string): T {
+        const el = document.getElementById(id);
+        if (!el) {
+            throw new Error(`The element with the id "${id}" wasn't found in DOM.`);
+        }
+        return el as T;
     }
 
     private init(): void {
