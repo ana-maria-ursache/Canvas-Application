@@ -80,7 +80,7 @@ export class CanvasEngine {
 
     private handleMouseUp(e: MouseEvent): void {
         if (this.isDragging && this.selectedShape) {
-            if ((this.selectedShape as any).color === '#ff0000') {
+            if ((this.selectedShape).color === '#ff0000') {
                 return;
             }
         }
@@ -213,13 +213,13 @@ export class CanvasEngine {
 
         this.shapes.forEach(shape => { // To reset the colors after being red for collision
             if (shape instanceof Circle) {
-                (shape as any).color = '#ffa6a6';
+                (shape ).color = '#ffa6a6';
             } else if (shape instanceof Square) {
-                (shape as any).color = '#00ffcc';
+                (shape ).color = '#00ffcc';
             } else if (shape instanceof Ellipse) {
-                (shape as any).color = '#ffd21d';
+                (shape ).color = '#ffd21d';
             } else if (shape instanceof Rectangle) {
-                (shape as any).color = '#4800ff';
+                (shape ).color = '#4800ff';
             }
         });
 
@@ -238,8 +238,8 @@ export class CanvasEngine {
     }
 
     private collidedWith(shape1: Shape, shape2: Shape): void {
-        (shape1 as any).color = '#ff0000';
-        (shape2 as any).color = '#ff0000';
+        (shape1 ).color = '#ff0000';
+        (shape2 ).color = '#ff0000';
         
         const event = new CustomEvent('shapeCollision', {
             detail: {
